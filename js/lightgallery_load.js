@@ -9,7 +9,7 @@
     attach: function (context, settings) {
       var that = this;
       // Open gallery on "show more" click.
-      $('.lightgallery-wrapper a.show-more').click(function (e) {
+      /*$('.lightgallery-wrapper a.show-more').click(function (e) {
         e.preventDefault();
 
         var id = $(this).attr('data-unique-id');
@@ -17,7 +17,7 @@
         $('#lightgallery-' + id, context).data('lightGallery').build(parseInt(slide));
 
         return false;
-      });
+      });*/
 
       // Init all galleries.
       for (id in settings.lightgallery.instances) {
