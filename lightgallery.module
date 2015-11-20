@@ -1,0 +1,175 @@
+<?php
+
+/**
+ * Holds hooks and general functionality.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function lightgallery_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#lightgallery':
+      $output = file_get_contents(drupal_get_path('module', 'lightgallery') . '/README.txt');
+      return '<pre>' . check_plain($output) . '</pre>';
+  }
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function lightgallery_libraries_info() {
+  $libraries['lightgallery'] = array(
+    'name' => 'Lightgallery',
+    'vendor url' => 'http://sachinchoolur.github.io/lightGallery/',
+    'download url' => 'https://github.com/sachinchoolur/lightGallery',
+    'path' => 'dist',
+    'version arguments' => array(
+      'file' => 'dist/js/lightgallery.min.js',
+      // Version 1.2.4
+      'pattern' => '/- v(1.2.4)/',
+      'lines' => 5,
+    ),
+    'files' => array(
+      'js' => array(
+        'js/lightgallery.min.js',
+        'js/lg-autoplay.min.js',
+        'js/lg-fullscreen.min.js',
+        'js/lg-thumbnail.min.js',
+        'js/lg-video.min.js',
+        'js/lg-zoom.min.js',
+      ),
+      'css' => array(
+        'css/lightgallery.min.css',
+        'css/lg-transitions.min.css',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function lightgallery_views_api() {
+  return array(
+    'api' => 3.0,
+    'path' => drupal_get_path('module', 'lightgallery') . '/views',
+  );
+}
+
+/**
+ * Display a view as a Lightgallery style.
+ */
+function template_preprocess_lightgallery_view(&$vars) {
+  $view = $vars['view'];
+  $result = $vars['rows'];
+  $vars['rows'] = array();
+  // Get values from options form.
+  $options = $view->style_plugin->options['lightgallery'];
+  // Get fields.
+  $fields = &$view->field;
+  // Render fields with view style plugin.
+  $handler = $view->style_plugin;
+  $rendered_rows = $handler->render_fields($result);
+  $thumb_field = $options['thumb_field'];
+  $image_field = $options['image_field'];
+  $title_field = $options['title'];
+  $has_more_label = FALSE;
+
+  // Overwrite $vars['rows'] with rendered fields and thumbnails.
+  foreach ($rendered_rows as $num => $row) {
+    $rendered_slide = FALSE;
+    $rendered_thumb = FALSE;
+    $rendered_title = FALSE;
+
+    foreach ($row as $field_name => $field) {
+      // Check if field is thumb field.
+      if ($field_name == $thumb_field) {
+        $rendered_thumb = $field;
+      }
+
+      // Check if field is image field.
+      if ($field_name == $image_field) {
+        $rendered_slide = $field;
+      }
+
+      // Check if field is title field.
+      if ($field_name == $title_field) {
+        $rendered_title = $field;
+      }
+
+      // Store field labels.
+      $vars['field_labels'][$num] = $fields[$field_name]->label();
+    }
+
+    $vars['rows'][$num]['slide'] = $rendered_slide;
+    $vars['rows'][$num]['thumb'] = $rendered_thumb;
+    $vars['rows'][$num]['title'] = $rendered_title;
+
+    // Set row style to display: hidden or block.
+    $vars['row_styles'][$num] = 'display: block;';
+    /*$initial_images = !empty($options['initial_images']) ? $options['initial_images'] : FALSE;
+
+    if ($initial_images && $num >= $initial_images) {
+      $vars['row_styles'][$num] = 'display: none;';
+      $has_more_label = TRUE;
+    }*/
+  }
+
+  // Set unique id, so that multiple instances on one page can be created.
+  $unique_id = uniqid();
+  $vars['id'] = $unique_id;
+
+  /*if ($has_more_label) {
+    // Set "show more" label.
+    $vars['show_more'] = array(
+      'label' => t('Show more'),
+      'initial_images'=> $initial_images,
+    );
+  }*/
+
+  // Add libraries and settings.
+  $option_set = _lightgallery_build_option_set($options);
+  lightgallery_add($unique_id, $option_set);
+}
+
+/**
+ * This function loads the required JavaScripts and css for a lightgallery instance.
+ * @param type $id
+ * @param type $option_set
+ */
+function lightgallery_add($id = NULL, $option_set = NULL) {
+  // Add library.
+  if ((!$library = libraries_load('lightgallery')) || empty($library['loaded'])) {
+    drupal_set_message(t('Lightgallery library was not found.'), 'error');
+    return FALSE;
+  }
+
+  // If the ID or optionset aren't set, it is assumed the settings will be set
+  // manually via the calling module/theme
+  if (!empty($id) && !empty($option_set)) {
+    // JavaScript settings
+    $js_settings = array(
+      'instances' => array(
+        $id => $option_set,
+      ),
+    );
+    // Add settings.
+    drupal_add_js(array('lightgallery' => $js_settings), 'setting');
+    // Add loader file.
+    drupal_add_js(drupal_get_path('module', 'lightgallery') . '/js/lightgallery_load.js',
+        array('type' => 'file', 'scope' => 'footer'));
+  }
+}
+
+/**
+ * Builds compatible JS options set from views options form.
+ * @param type $options
+ */
+function _lightgallery_build_option_set($options) {
+  return array(
+    'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
+  );
+}
