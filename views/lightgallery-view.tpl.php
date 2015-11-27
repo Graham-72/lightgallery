@@ -7,7 +7,6 @@ $rows = $variables['rows'];
 $id = $variables['id'];
 $field_labels = $variables['field_labels'];
 $row_styles = $variables['row_styles'];
-$show_more = $variables['show_more'];
 ?>
 <div class="lightgallery-wrapper">
     <ul class="lightgallery" id="lightgallery-<?php print $id; ?>">
@@ -26,7 +25,4 @@ $show_more = $variables['show_more'];
           </li>
         <?php endforeach; ?>
     </ul>
-    <?php if (!empty($show_more)): ?>
-      <a href="#" class="show-more" data-unique-id="<?php print $id; ?>" data-open-slide="<?php print $show_more['initial_images']; ?>"><?php print $show_more['label']; ?></a>
-    <?php endif; ?>
 </div>

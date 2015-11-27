@@ -47,14 +47,6 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#collapsed' => FALSE,
     );
 
-    /*$form['lightgallery']['initial_images'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Initial images to show'),
-      '#default_value' => isset($this->options['lightgallery']['initial_images']) ? $this->options['lightgallery']['initial_images'] : '',
-      '#required' => FALSE,
-      '#description' => t('The initial images to show on page load. Leave empty to show all.'),
-    );*/
-
     $form['lightgallery']['thumb_field'] = array(
       '#title' => t('Thumbnail field'),
       '#type' => 'select',

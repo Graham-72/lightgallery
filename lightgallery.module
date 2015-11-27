@@ -3,6 +3,10 @@
 /**
  * Holds hooks and general functionality.
  */
+// Move the field-based logic (field hooks and related) into another file
+// purely for DX. This file still has to be globally included as field
+// hooks don't work as expected if formally defined in hook_hook_info().
+require_once dirname(__FILE__) . '/includes/lightgallery.field.inc';
 
 /**
  * Implements hook_help().
@@ -27,7 +31,7 @@ function lightgallery_libraries_info() {
     'version arguments' => array(
       'file' => 'dist/js/lightgallery.min.js',
       // Version 1.2.4
-      'pattern' => '/- v(1.2.4)/',
+      'pattern' => '/- v(1.2.*)/',
       'lines' => 5,
     ),
     'files' => array(
@@ -60,6 +64,33 @@ function lightgallery_views_api() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function lightgallery_theme() {
+  return array(
+    'lightgallery_image_formatter' => array(
+      'variables' => array(
+        'items' => NULL,
+        'entity_type' => NULL,
+        'entity' => NULL,
+        'node' => NULL, // Left for legacy support.
+        'field' => array(),
+        'display_settings' => array(),
+      ),
+      'file' => 'includes/lightgallery.theme.inc',
+    ),
+    'lightgallery_item_list' => array(
+      'variables' => array(
+        'items' => array(),
+        'unque_id' => NULL,
+      ),
+      'path' => drupal_get_path('module', 'lightgallery') . '/templates',
+      'template' => 'lightgallery-item-list'
+    ),
+  );
+}
+
+/**
  * Display a view as a Lightgallery style.
  */
 function template_preprocess_lightgallery_view(&$vars) {
@@ -76,7 +107,6 @@ function template_preprocess_lightgallery_view(&$vars) {
   $thumb_field = $options['thumb_field'];
   $image_field = $options['image_field'];
   $title_field = $options['title'];
-  $has_more_label = FALSE;
 
   // Overwrite $vars['rows'] with rendered fields and thumbnails.
   foreach ($rendered_rows as $num => $row) {
@@ -110,25 +140,11 @@ function template_preprocess_lightgallery_view(&$vars) {
 
     // Set row style to display: hidden or block.
     $vars['row_styles'][$num] = 'display: block;';
-    /*$initial_images = !empty($options['initial_images']) ? $options['initial_images'] : FALSE;
-
-    if ($initial_images && $num >= $initial_images) {
-      $vars['row_styles'][$num] = 'display: none;';
-      $has_more_label = TRUE;
-    }*/
   }
 
   // Set unique id, so that multiple instances on one page can be created.
   $unique_id = uniqid();
   $vars['id'] = $unique_id;
-
-  /*if ($has_more_label) {
-    // Set "show more" label.
-    $vars['show_more'] = array(
-      'label' => t('Show more'),
-      'initial_images'=> $initial_images,
-    );
-  }*/
 
   // Add libraries and settings.
   $option_set = _lightgallery_build_option_set($options);
