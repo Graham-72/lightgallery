@@ -79,8 +79,29 @@ class lightgallery_style_plugin extends views_plugin_style {
     $form['lightgallery']['thumbnails'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use thumbnails'),
-      '#default_value' => isset($this->options['lightgallery']['thumbnails']) ? $this->options['lightgallery']['thumbnails'] : NULL,
+      '#default_value' => isset($this->options['lightgallery']['thumbnails']) ? $this->options['lightgallery']['thumbnails'] : TRUE,
       '#description' => t('Indicate if you want to use thumbnails in the LightGallery.')
+    );
+
+    $form['lightgallery']['closable'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Closable'),
+      '#default_value' => isset($this->options['lightgallery']['closable']) ? $this->options['lightgallery']['closable'] : TRUE,
+      '#description' => t('Allows clicks on dimmer to close gallery.')
+    );
+
+    $form['lightgallery']['loop'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Loop'),
+      '#default_value' => isset($this->options['lightgallery']['loop']) ? $this->options['lightgallery']['loop'] : TRUE,
+      '#description' => t('If not selected, the ability to loop back to the beginning of the gallery when on the last element, will be disabled.')
+    );
+
+    $form['lightgallery']['mode'] = array(
+      '#type' => 'select',
+      '#title' => t('Type of transition between images'),
+      '#options' => _lightgallery_get_modes(),
+      '#default_value' => isset($this->options['lightgallery']['mode']) ? $this->options['lightgallery']['mode'] : NULL,
     );
   }
 
@@ -118,10 +139,10 @@ class lightgallery_style_plugin extends views_plugin_style {
     // there is no reason to execute this code.
     if (!empty($keys)) {
       $fields = $this->conf_get_field_sources();
+      $image_fields = array_keys($fields['field_options_images']);
       foreach ($result as $count => $row) {
         $this->view->row_index = $count;
         foreach ($keys as $id) {
-          $image_fields = array_keys($fields['field_options_images']);
           if (in_array($id, $image_fields)) {
             // This is an image/thumb field.
             // Create URI for selected image style.
@@ -129,10 +150,11 @@ class lightgallery_style_plugin extends views_plugin_style {
             $uri = !empty($result[$count]->{'field_' . $id}[0]['raw']['uri']) ? $result[$count]->{'field_' . $id}[0]['raw']['uri'] : FALSE;
             if ($uri) {
               if (!empty($image_style)) {
-                $this->rendered_fields[$count][$id] = file_create_url(image_style_url($image_style, $uri));
+                $this->rendered_fields[$count][$id] = file_create_url(image_style_url($image_style,
+                        $uri));
               }
               else {
-                 $this->rendered_fields[$count][$id] = file_create_url($uri);
+                $this->rendered_fields[$count][$id] = file_create_url($uri);
               }
             }
           }

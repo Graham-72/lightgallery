@@ -187,5 +187,22 @@ function lightgallery_add($id = NULL, $option_set = NULL) {
 function _lightgallery_build_option_set($options) {
   return array(
     'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
+    'mode' => !empty($options['mode']) ? $options['mode'] : 'lg-slide',
+    'loop' => !empty($options['loop']) ? TRUE : FALSE,
+    'closable' => !empty($options['closable']) ? TRUE : FALSE,
   );
+}
+
+/**
+ * Fetches available lightgallery modes.
+ */
+function _lightgallery_get_modes() {
+  return drupal_map_assoc(array(
+    'lg-slide', 'lg-fade', 'lg-zoom-in', 'lg-zoom-in-big', 'lg-zoom-out', 'lg-zoom-out-big', 'lg-zoom-out-in',
+    'lg-zoom-in-out', 'lg-soft-zoom', 'lg-scale-up', 'lg-slide-circular', 'lg-slide-circular-vertical', 'lg-slide-vertical',
+    'lg-slide-vertical-growth', 'lg-slide-skew-only', 'lg-slide-skew-only-rev', 'lg-slide-skew-only-y', 'lg-slide-skew-only-y-rev',
+    'lg-slide-skew', 'lg-slide-skew-rev', 'lg-slide-skew-cross', 'lg-slide-skew-cross-rev', 'lg-slide-skew-ver',
+    'lg-slide-skew-ver-rev', 'lg-slide-skew-ver-cross', 'lg-slide-skew-ver-cross-rev',
+    'lg-lollipop', 'lg-lollipop-rev', 'lg-rotate', 'lg-rotate-rev', 'lg-tube'
+  ));
 }
