@@ -8,16 +8,6 @@
     galleries: [],
     attach: function (context, settings) {
       var that = this;
-      // Open gallery on "show more" click.
-      /*$('.lightgallery-wrapper a.show-more').click(function (e) {
-        e.preventDefault();
-
-        var id = $(this).attr('data-unique-id');
-        var slide =  $(this).attr('data-open-slide');
-        $('#lightgallery-' + id, context).data('lightGallery').build(parseInt(slide));
-
-        return false;
-      });*/
 
       // Init all galleries.
       for (id in settings.lightgallery.instances) {

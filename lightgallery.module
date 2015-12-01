@@ -42,6 +42,7 @@ function lightgallery_libraries_info() {
         'js/lg-thumbnail.min.js',
         'js/lg-video.min.js',
         'js/lg-zoom.min.js',
+        'js/lg-hash.min.js',
       ),
       'css' => array(
         'css/lightgallery.min.css',
@@ -186,10 +187,22 @@ function lightgallery_add($id = NULL, $option_set = NULL) {
  */
 function _lightgallery_build_option_set($options) {
   return array(
-    'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
     'mode' => !empty($options['mode']) ? $options['mode'] : 'lg-slide',
+    'preload' => $options['preload'],
+    'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
     'loop' => !empty($options['loop']) ? TRUE : FALSE,
     'closable' => !empty($options['closable']) ? TRUE : FALSE,
+    'escKey' => !empty($options['esc_key']) ? TRUE : FALSE,
+    'keyPress' => !empty($options['key_press']) ? TRUE : FALSE,
+    'contols' => !empty($options['contols']) ? TRUE : FALSE,
+    'mousewheel' => !empty($options['mouse_wheel']) ? TRUE : FALSE,
+    'download' => !empty($options['download']) ? TRUE : FALSE,
+    'counter' => !empty($options['counter']) ? TRUE : FALSE,
+    'enableDrag' => !empty($options['drag']) ? TRUE : FALSE,
+    'enableTouch' => !empty($options['touch']) ? TRUE : FALSE,
+    'fullScreen' => !empty($options['full_screen']) ? TRUE : FALSE,
+    'zoom' => !empty($options['zoom']) ? TRUE : FALSE,
+    'hash' => !empty($options['hash']) ? TRUE : FALSE,
   );
 }
 
