@@ -40,14 +40,15 @@ class lightgallery_style_plugin extends views_plugin_style {
       $missing_field_warning = t('<strong>You must add a field of type image, file or file ID to your view display before this value can be set.</strong><br/>');
     }
 
-    $form['lightgallery'] = array(
+    // CORE OPTIONS.
+    $form['lightgallery_core'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Lightgallery settings'),
-      '#collapsible' => FALSE,
+      '#title' => t('Lightgallery core settings'),
+      '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
 
-    $form['lightgallery']['thumb_field'] = array(
+    $form['lightgallery_core']['thumb_field'] = array(
       '#title' => t('Thumbnail field'),
       '#type' => 'select',
       '#options' => $fields['field_options_images'],
@@ -57,7 +58,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#required' => TRUE,
     );
 
-    $form['lightgallery']['image_field'] = array(
+    $form['lightgallery_core']['image_field'] = array(
       '#title' => t('Image field'),
       '#type' => 'select',
       '#options' => $fields['field_options_images'],
@@ -67,7 +68,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#required' => TRUE,
     );
 
-    $form['lightgallery']['title'] = array(
+    $form['lightgallery_core']['title'] = array(
       '#title' => t('Title field'),
       '#type' => 'select',
       '#options' => array('' => t('None')) + $fields['field_options'],
@@ -76,7 +77,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#required' => FALSE,
     );
 
-    $form['lightgallery']['mode'] = array(
+    $form['lightgallery_core']['mode'] = array(
       '#type' => 'select',
       '#title' => t('Transition'),
       '#options' => _lightgallery_get_modes(),
@@ -84,7 +85,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#description' => t('Type of transition between images.'),
     );
 
-    $form['lightgallery']['preload'] = array(
+    $form['lightgallery_core']['preload'] = array(
       '#type' => 'select',
       '#title' => t('Preload'),
       '#options' => drupal_map_assoc(array(1, 2, 3, 4)),
@@ -94,56 +95,49 @@ class lightgallery_style_plugin extends views_plugin_style {
           . 'If preload is 2 then 2nd 3rd 5th 6th slides will be preloaded'),
     );
 
-    $form['lightgallery']['thumbnails'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Use thumbnails'),
-      '#default_value' => isset($this->options['lightgallery']['thumbnails']) ? $this->options['lightgallery']['thumbnails'] : TRUE,
-      '#description' => t('Indicate if you want to use thumbnails in the LightGallery.')
-    );
-
-    $form['lightgallery']['closable'] = array(
+    $form['lightgallery_core']['closable'] = array(
       '#type' => 'checkbox',
       '#title' => t('Closable'),
       '#default_value' => isset($this->options['lightgallery']['closable']) ? $this->options['lightgallery']['closable'] : TRUE,
       '#description' => t('Allows clicks on dimmer to close gallery.')
     );
 
-    $form['lightgallery']['loop'] = array(
+    $form['lightgallery_core']['loop'] = array(
       '#type' => 'checkbox',
       '#title' => t('Loop'),
       '#default_value' => isset($this->options['lightgallery']['loop']) ? $this->options['lightgallery']['loop'] : TRUE,
       '#description' => t('If not selected, the ability to loop back to the beginning of the gallery when on the last element, will be disabled.')
     );
 
-    $form['lightgallery']['esc_key'] = array(
+    $form['lightgallery_core']['esc_key'] = array(
       '#type' => 'checkbox',
       '#title' => t('Escape key'),
       '#default_value' => isset($this->options['lightgallery']['esc_key']) ? $this->options['lightgallery']['esc_key'] : TRUE,
       '#description' => t('Whether the LightGallery could be closed by pressing the "Esc" key.')
     );
 
-    $form['lightgallery']['key_press'] = array(
+    $form['lightgallery_core']['key_press'] = array(
       '#type' => 'checkbox',
       '#title' => t('Keyboard'),
       '#default_value' => isset($this->options['lightgallery']['key_press']) ? $this->options['lightgallery']['key_press'] : TRUE,
       '#description' => t('Enable keyboard navigation.')
     );
 
-    $form['lightgallery']['controls'] = array(
+    $form['lightgallery_core']['controls'] = array(
       '#type' => 'checkbox',
       '#title' => t('Controls'),
       '#default_value' => isset($this->options['lightgallery']['controls']) ? $this->options['lightgallery']['controls'] : TRUE,
       '#description' => t('If not checked, prev/next buttons will not be displayed.')
     );
 
-    $form['lightgallery']['mouse_wheel'] = array(
+    $form['lightgallery_core']['mouse_wheel'] = array(
       '#type' => 'checkbox',
       '#title' => t('Mouse wheel'),
       '#default_value' => isset($this->options['lightgallery']['mouse_wheel']) ? $this->options['lightgallery']['mouse_wheel'] : TRUE,
       '#description' => t('Chane slide on mousewheel')
     );
 
-    $form['lightgallery']['download'] = array(
+    $form['lightgallery_core']['download'] = array(
       '#type' => 'checkbox',
       '#title' => t('Download'),
       '#default_value' => isset($this->options['lightgallery']['download']) ? $this->options['lightgallery']['download'] : TRUE,
@@ -151,46 +145,151 @@ class lightgallery_style_plugin extends views_plugin_style {
           . 'By default download url will be taken from data-src/href attribute but it supports only for modern browsers.'),
     );
 
-    $form['lightgallery']['counter'] = array(
+    $form['lightgallery_core']['counter'] = array(
       '#type' => 'checkbox',
       '#title' => t('Counter'),
       '#default_value' => isset($this->options['lightgallery']['counter']) ? $this->options['lightgallery']['counter'] : TRUE,
       '#description' => t('Whether to show total number of images and index number of currently displayed image.'),
     );
 
-    $form['lightgallery']['drag'] = array(
+    $form['lightgallery_core']['drag'] = array(
       '#type' => 'checkbox',
       '#title' => t('Drag'),
       '#default_value' => isset($this->options['lightgallery']['drag']) ? $this->options['lightgallery']['drag'] : TRUE,
       '#description' => t('Enables desktop mouse drag support.'),
     );
 
-    $form['lightgallery']['touch'] = array(
+    $form['lightgallery_core']['touch'] = array(
       '#type' => 'checkbox',
       '#title' => t('Touch'),
       '#default_value' => isset($this->options['lightgallery']['touch']) ? $this->options['lightgallery']['touch'] : TRUE,
       '#description' => t('Enables touch support.'),
     );
 
-    $form['lightgallery']['full_screen'] = array(
+    // THUMB OPTIONS.
+    $form['lightgallery_thumbs'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery thumbnail settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($this->options['lightgallery']['thumbnails']),
+    );
+
+    $form['lightgallery_thumbs']['thumbnails'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use thumbnails'),
+      '#default_value' => isset($this->options['lightgallery']['thumbnails']) ? $this->options['lightgallery']['thumbnails'] : TRUE,
+      '#description' => t('Indicate if you want to use thumbnails in the LightGallery.')
+    );
+
+    // AUTOPLAY OPTIONS.
+    $form['lightgallery_autoplay'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery autoplay settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => isset($this->options['lightgallery']['autoplay']) ? !$this->options['lightgallery']['autoplay'] : FALSE,
+    );
+
+    $form['lightgallery_autoplay']['autoplay'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Autoplay'),
+      '#default_value' => isset($this->options['lightgallery']['autoplay']) ? $this->options['lightgallery']['autoplay'] : TRUE,
+      '#description' => t('Enable/Disable gallery autoplay.'),
+    );
+
+    $form['lightgallery_autoplay']['pause'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Pause'),
+      '#default_value' => isset($this->options['lightgallery']['pause']) ? $this->options['lightgallery']['pause'] : 5000,
+      '#description' => t('The time (in ms) between each auto transition.'),
+    );
+
+    $form['lightgallery_autoplay']['progress_bar'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Progress bar'),
+      '#default_value' => isset($this->options['lightgallery']['progress_bar']) ? $this->options['lightgallery']['progress_bar'] : TRUE,
+      '#description' => t('Enable/Disable autoplay progress bar.'),
+    );
+
+    $form['lightgallery_autoplay']['autoplay_controls'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Autoplay controls'),
+      '#default_value' => isset($this->options['lightgallery']['autoplay_controls']) ? $this->options['lightgallery']['autoplay_controls'] : TRUE,
+      '#description' => t('Show/hide autoplay controls.'),
+    );
+
+    // FULL SCREEN OPTIONS.
+    $form['lightgallery_full_screen'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery fullscreen settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($this->options['lightgallery']['full_screen']),
+    );
+
+    $form['lightgallery_full_screen']['full_screen'] = array(
       '#type' => 'checkbox',
       '#title' => t('Full screen'),
       '#default_value' => isset($this->options['lightgallery']['full_screen']) ? $this->options['lightgallery']['full_screen'] : TRUE,
       '#description' => t('Enable/Disable fullscreen mode.'),
     );
 
-    $form['lightgallery']['zoom'] = array(
+    // PAGER OPTIONS.
+    $form['lightgallery_pager'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery pager settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($this->options['lightgallery']['pager']),
+    );
+
+    $form['lightgallery_pager']['pager'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Pager'),
+      '#default_value' => isset($this->options['lightgallery']['pager']) ? $this->options['lightgallery']['pager'] : TRUE,
+      '#description' => t('Enable/Disable pager.'),
+    );
+
+    // ZOOM OPTIONS.
+    $form['lightgallery_zoom'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery zoom settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($this->options['lightgallery']['zoom']),
+    );
+
+    $form['lightgallery_zoom']['zoom'] = array(
       '#type' => 'checkbox',
       '#title' => t('Zoom'),
       '#default_value' => isset($this->options['lightgallery']['zoom']) ? $this->options['lightgallery']['zoom'] : TRUE,
       '#description' => t('Enable/Disable zoom option.'),
     );
 
-    $form['lightgallery']['hash'] = array(
+    $form['lightgallery_zoom']['scale'] = array(
+      '#type' => 'select',
+      '#title' => t('Scale'),
+      '#options' => drupal_map_assoc(array(1, 2, 3, 4)),
+      '#default_value' => isset($this->options['lightgallery']['scale']) ? $this->options['lightgallery']['scale'] : TRUE,
+      '#description' => t('Value of zoom that should be incremented/decremented.'),
+    );
+
+    // HASH OPTIONS.
+    $form['lightgallery_hash'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Lightgallery hash settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($this->options['lightgallery']['hash']),
+    );
+
+    $form['lightgallery_hash']['hash'] = array(
       '#type' => 'checkbox',
       '#title' => t('Update hash in url'),
       '#default_value' => isset($this->options['lightgallery']['hash']) ? $this->options['lightgallery']['hash'] : TRUE,
       '#description' => t('Enable/Disable hash option.'),
+    );
+
+    $form['lightgallery_hash']['gallery_id'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Gallery ID'),
+      '#default_value' => isset($this->options['lightgallery']['gallery_id']) ? $this->options['lightgallery']['gallery_id'] : 1,
+      '#description' => t('Unique id for each gallery. It is mandatory when you use hash plugin for multiple galleries on the same page.'),
     );
   }
 
@@ -198,9 +297,11 @@ class lightgallery_style_plugin extends views_plugin_style {
    * Add form validation for options.
    */
   function options_validate(&$form, &$form_state) {
-    parent::options_validate($form, $form_state);
+    $style_options = $form_state['values']['style_options'];
+    // Flatten style options array.
+    $form_state['values']['style_options']['lightgallery'] = $this->flatten_array($style_options);
 
-    // Form_error($form['lightgallery']['height'], 'test');
+    parent::options_validate($form, $form_state);
   }
 
   function validate() {
@@ -296,6 +397,20 @@ class lightgallery_style_plugin extends views_plugin_style {
       }
     }
     return $options;
+  }
+
+  /**
+   * Flatten array and preserve keys.
+   * @param array $array
+   * @return array
+   */
+  private function flatten_array(array $array) {
+    $flattened_array = array();
+    array_walk_recursive($array,
+        function($a, $key) use (&$flattened_array) {
+      $flattened_array[$key] = $a;
+    });
+    return $flattened_array;
   }
 
 }
