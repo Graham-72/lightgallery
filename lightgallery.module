@@ -186,10 +186,9 @@ function lightgallery_add($id = NULL, $option_set = NULL) {
  * @param type $options
  */
 function _lightgallery_build_option_set($options) {
-  return array(
+  $option_set = array(
     'mode' => !empty($options['mode']) ? $options['mode'] : 'lg-slide',
     'preload' => $options['preload'],
-    'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
     'loop' => !empty($options['loop']) ? TRUE : FALSE,
     'closable' => !empty($options['closable']) ? TRUE : FALSE,
     'escKey' => !empty($options['esc_key']) ? TRUE : FALSE,
@@ -200,10 +199,40 @@ function _lightgallery_build_option_set($options) {
     'counter' => !empty($options['counter']) ? TRUE : FALSE,
     'enableDrag' => !empty($options['drag']) ? TRUE : FALSE,
     'enableTouch' => !empty($options['touch']) ? TRUE : FALSE,
+    'thumbnail' => !empty($options['thumbnails']) ? TRUE : FALSE,
+    'autoplay' => !empty($options['autoplay']) ? TRUE : FALSE,
     'fullScreen' => !empty($options['full_screen']) ? TRUE : FALSE,
+    'pager' => !empty($options['pager']) ? TRUE : FALSE,
     'zoom' => !empty($options['zoom']) ? TRUE : FALSE,
     'hash' => !empty($options['hash']) ? TRUE : FALSE,
   );
+
+  if ($option_set['thumbnail']) {
+    // Add extra thumb options.
+    $option_set['animateThumb'] = !empty($options['animate_thumb']) ? TRUE : FALSE;
+    $option_set['currentPagerPosition'] = !empty($options['current_pager_position']) ? $options['current_pager_position'] : 'middle';
+    $option_set['thumbWidth'] = !empty($options['thumb_width']) ? $options['thumb_width'] : 100;
+    $option_set['thumbContHeight'] = !empty($options['thumb_cont_height']) ? $options['thumb_cont_height'] : 100;
+  }
+
+  if ($option_set['autoplay']) {
+    // Add extra autoplay options.
+    $option_set['pause'] = !empty($options['pause']) ? $options['pause'] : 5000;
+    $option_set['progressBar'] = !empty($options['progress_bar']) ? TRUE : FALSE;
+    $option_set['autoplayControls'] = !empty($options['autoplay_controls']) ? TRUE : FALSE;
+  }
+
+  if ($option_set['zoom']) {
+    // Add extra autoplay options.
+    $option_set['scale'] = !empty($options['scale']) ? $options['scale'] : 1;
+  }
+
+  if ($option_set['hash']) {
+    // Add extra autoplay options.
+    $option_set['galleryId'] = !empty($options['gallery_id']) ? $options['gallery_id'] : 1;
+  }
+
+  return $option_set;
 }
 
 /**

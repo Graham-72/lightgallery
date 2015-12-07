@@ -171,7 +171,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'fieldset',
       '#title' => t('Lightgallery thumbnail settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => empty($this->options['lightgallery']['thumbnails']),
+      '#collapsed' => isset($this->options['lightgallery']['thumbnails']) ? !$this->options['lightgallery']['thumbnails'] : FALSE,
     );
 
     $form['lightgallery_thumbs']['thumbnails'] = array(
@@ -179,6 +179,35 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#title' => t('Use thumbnails'),
       '#default_value' => isset($this->options['lightgallery']['thumbnails']) ? $this->options['lightgallery']['thumbnails'] : TRUE,
       '#description' => t('Indicate if you want to use thumbnails in the LightGallery.')
+    );
+
+    $form['lightgallery_thumbs']['animate_thumb'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Animate thumbnails'),
+      '#default_value' => isset($this->options['lightgallery']['animate_thumb']) ? $this->options['lightgallery']['animate_thumb'] : TRUE,
+      '#description' => t('Enable thumbnail animation.')
+    );
+
+    $form['lightgallery_thumbs']['current_pager_position'] = array(
+      '#type' => 'select',
+      '#title' => t('Position'),
+      '#options' => array('left' => t('Left'), 'middle' => t('Middle'), 'right' => t('Right')),
+      '#default_value' => isset($this->options['lightgallery']['current_pager_position']) ? $this->options['lightgallery']['current_pager_position'] : 'middle',
+      '#description' => t('Position of selected thumbnail.')
+    );
+
+    $form['lightgallery_thumbs']['thumb_width'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width'),
+      '#default_value' => isset($this->options['lightgallery']['thumb_width']) ? $this->options['lightgallery']['thumb_width'] : 100,
+      '#description' => t('Width of each thumbnails.')
+    );
+
+    $form['lightgallery_thumbs']['thumb_cont_height'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Height'),
+      '#default_value' => isset($this->options['lightgallery']['thumb_cont_height']) ? $this->options['lightgallery']['thumb_cont_height'] : 100,
+      '#description' => t('Height of the thumbnail container including padding and border.')
     );
 
     // AUTOPLAY OPTIONS.
@@ -222,7 +251,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'fieldset',
       '#title' => t('Lightgallery fullscreen settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => empty($this->options['lightgallery']['full_screen']),
+      '#collapsed' => isset($this->options['lightgallery']['full_screen']) ? !$this->options['lightgallery']['full_screen'] : FALSE,
     );
 
     $form['lightgallery_full_screen']['full_screen'] = array(
@@ -237,7 +266,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'fieldset',
       '#title' => t('Lightgallery pager settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => empty($this->options['lightgallery']['pager']),
+      '#collapsed' => isset($this->options['lightgallery']['pager']) ? !$this->options['lightgallery']['pager'] : FALSE,
     );
 
     $form['lightgallery_pager']['pager'] = array(
@@ -252,7 +281,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'fieldset',
       '#title' => t('Lightgallery zoom settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => empty($this->options['lightgallery']['zoom']),
+      '#collapsed' => isset($this->options['lightgallery']['zoom']) ? !$this->options['lightgallery']['zoom'] : FALSE,
     );
 
     $form['lightgallery_zoom']['zoom'] = array(
@@ -266,7 +295,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'select',
       '#title' => t('Scale'),
       '#options' => drupal_map_assoc(array(1, 2, 3, 4)),
-      '#default_value' => isset($this->options['lightgallery']['scale']) ? $this->options['lightgallery']['scale'] : TRUE,
+      '#default_value' => isset($this->options['lightgallery']['scale']) ? $this->options['lightgallery']['scale'] : 1,
       '#description' => t('Value of zoom that should be incremented/decremented.'),
     );
 
@@ -275,7 +304,7 @@ class lightgallery_style_plugin extends views_plugin_style {
       '#type' => 'fieldset',
       '#title' => t('Lightgallery hash settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => empty($this->options['lightgallery']['hash']),
+      '#collapsed' => isset($this->options['lightgallery']['hash']) ? !$this->options['lightgallery']['hash'] : FALSE,
     );
 
     $form['lightgallery_hash']['hash'] = array(
