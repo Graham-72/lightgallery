@@ -188,7 +188,7 @@ function lightgallery_add($id = NULL, $option_set = NULL) {
 function _lightgallery_build_option_set($options) {
   $option_set = array(
     'mode' => !empty($options['mode']) ? $options['mode'] : 'lg-slide',
-    'preload' => $options['preload'],
+    'preload' => !empty($options['preload']) ? $options['preload'] : 1,
     'loop' => !empty($options['loop']) ? TRUE : FALSE,
     'closable' => !empty($options['closable']) ? TRUE : FALSE,
     'escKey' => !empty($options['esc_key']) ? TRUE : FALSE,

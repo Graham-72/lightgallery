@@ -41,8 +41,25 @@ function theme_lightgallery_image_formatter($variables) {
 
   // Build options array.
   $options = array(
-    'thumbnails' => $settings['lightgallery_use_thumbs'],
+    'mode' => $settings['lightgallery_core']['mode'],
+    'preload' => $settings['lightgallery_core']['preload'],
+    'loop' => $settings['lightgallery_core']['loop'],
+    'closable' => $settings['lightgallery_core']['closable'],
+    'esc_key' => $settings['lightgallery_core']['esc_key'],
+    'key_press' => $settings['lightgallery_core']['key_press'],
+    'contols' => $settings['lightgallery_core']['controls'],
+    'mouse_wheel' => $settings['lightgallery_core']['mouse_wheel'],
+    'download' => $settings['lightgallery_core']['download'],
+    'counter' => $settings['lightgallery_core']['counter'],
+    'drag' => $settings['lightgallery_core']['drag'],
+    'touch' => $settings['lightgallery_core']['touch'],
+    'thumbnails' => $settings['lightgallery_thumbs']['thumbnails'],
+    'animate_thumb' => $settings['lightgallery_thumbs']['animate_thumb'],
+    'current_pager_position' => $settings['lightgallery_thumbs']['current_pager_position'],
+    'thumb_width' => $settings['lightgallery_thumbs']['thumb_width'],
+    'thumb_cont_height' => $settings['lightgallery_thumbs']['thumb_cont_height'],
   );
+
 
   // Add libraries and settings.
   $option_set = _lightgallery_build_option_set($options);
