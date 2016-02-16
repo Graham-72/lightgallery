@@ -1,7 +1,7 @@
 name = Light Gallery
 description = Integrate the Light Gallery library with Drupal
 core = 7.x
-package = EntityOne
+package = Light Gallery
 
 ; Dependencies
 dependencies[] = libraries (>=2.x)
