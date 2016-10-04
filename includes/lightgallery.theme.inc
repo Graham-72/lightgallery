@@ -56,8 +56,8 @@ function theme_lightgallery_image_formatter($variables) {
     'thumbnails' => $settings['lightgallery_thumbs']['thumbnails'],
     'animate_thumb' => $settings['lightgallery_thumbs']['animate_thumb'],
     'current_pager_position' => $settings['lightgallery_thumbs']['current_pager_position'],
-    'thumb_width' => $settings['lightgallery_thumbs']['thumb_width'],
-    'thumb_cont_height' => $settings['lightgallery_thumbs']['thumb_cont_height'],
+    'thumb_width' => (int)$settings['lightgallery_thumbs']['thumb_width'],
+    'thumb_cont_height' => (int)$settings['lightgallery_thumbs']['thumb_cont_height'],
   );
 
 
