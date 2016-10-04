@@ -32,6 +32,7 @@ function lightgallery_field_formatter_info() {
           'counter' => TRUE,
           'drag' => TRUE,
           'touch' => TRUE,
+          'selector' => FALSE,
         ),
         'lightgallery_thumbs' => array(
           'thumbnails' => TRUE,
@@ -165,6 +166,13 @@ function lightgallery_field_formatter_settings_form($field, $instance, $view_mod
     '#title' => t('Touch'),
     '#default_value' => $settings['lightgallery_core']['touch'],
     '#description' => t('Enables touch support.'),
+  );
+
+  $element['lightgallery_core']['selector'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Item selector'),
+    '#default_value' => $settings['lightgallery_core']['selector'],
+    '#description' => t('CSS item selector for custom layouts.'),
   );
 
   // Thumb options.

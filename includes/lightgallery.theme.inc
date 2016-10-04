@@ -53,6 +53,7 @@ function theme_lightgallery_image_formatter($variables) {
     'counter' => $settings['lightgallery_core']['counter'],
     'drag' => $settings['lightgallery_core']['drag'],
     'touch' => $settings['lightgallery_core']['touch'],
+    'selector' => $settings['lightgallery_core']['selector'],
     'thumbnails' => $settings['lightgallery_thumbs']['thumbnails'],
     'animate_thumb' => $settings['lightgallery_thumbs']['animate_thumb'],
     'current_pager_position' => $settings['lightgallery_thumbs']['current_pager_position'],
